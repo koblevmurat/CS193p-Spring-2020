@@ -2,17 +2,20 @@
 //  Pie.swift
 //  Memorize
 //
-//  Created by Felix Lin on 6/3/20.
-//  Copyright © 2020 Felix Lin. All rights reserved.
+//  Created by dev on 6/3/20.
+//  Copyright © 2020 dev.cs193p.student. All rights reserved.
 //
 
 import SwiftUI
 
 struct Pie: Shape {
+    
     var startAngle: Angle
     var endAngle: Angle
     var clockWise: Bool = false
-    var animatableData: AnimatablePair<Double, Double> {
+    
+    //couse shapes are alredy animatable
+    var animatableData: AnimatablePair <Double, Double > {
         get {
             AnimatablePair(startAngle.radians, endAngle.radians)
         }
@@ -22,10 +25,11 @@ struct Pie: Shape {
         }
     }
     
-    func path(in rect: CGRect) -> Path {
+    func path (in rect: CGRect) -> Path {
         let center = CGPoint(x: rect.midX, y: rect.midY)
         let radius = min(rect.width, rect.height) / 2
-        let start = CGPoint(
+        
+        let start = CGPoint (
             x: center.x + radius * cos(CGFloat(startAngle.radians)),
             y: center.y + radius * sin(CGFloat(startAngle.radians))
         )

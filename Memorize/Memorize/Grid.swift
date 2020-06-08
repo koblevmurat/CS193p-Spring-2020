@@ -2,13 +2,14 @@
 //  Grid.swift
 //  Memorize
 //
-//  Created by Felix Lin on 5/30/20.
-//  Copyright © 2020 Felix Lin. All rights reserved.
+//  Created by dev on 5/30/20.
+//  Copyright © 2020 dev.cs193p.student. All rights reserved.
 //
 
 import SwiftUI
 
 struct Grid<Item, ItemView>: View where Item: Identifiable, ItemView: View {
+    
     private var items: [Item]
     private var viewForItem: (Item) -> ItemView
     
@@ -19,20 +20,22 @@ struct Grid<Item, ItemView>: View where Item: Identifiable, ItemView: View {
     
     var body: some View {
         GeometryReader { geometry in
+           // self.body(for: geometry.size)
             self.body(for: GridLayout(itemCount: self.items.count, in: geometry.size))
         }
     }
     
     private func body(for layout: GridLayout) -> some View {
-        ForEach(items) { item in
+        ForEach(items){ item in
             self.body(for: item, in: layout)
         }
     }
     
-    func body(for item: Item, in layout: GridLayout) -> some View {
-        let index = items.firstIndex(matching: item)!
+    private func body (for item: Item, in layout: GridLayout) -> some View {
+        let index = self.items.firstIndex(matching: item)!
         return viewForItem(item)
-            .frame(width: layout.itemSize.width, height: layout.itemSize.height)
-            .position(layout.location(ofItemAt: index))
+                           .frame(width: layout.itemSize.width, height: layout.itemSize.height)
+                           .position(layout.location(ofItemAt: index))
+       
     }
 }

@@ -2,14 +2,14 @@
 //  MemoryGame.swift
 //  Memorize
 //
-//  Created by Felix Lin on 5/23/20.
-//  Copyright © 2020 Felix Lin. All rights reserved.
+//  Created by dev on 5/26/20.
+//  Copyright © 2020 dev.cs193p.student. All rights reserved.
 //
 
 import Foundation
 
-struct MemoryGame<CardContent> where CardContent: Equatable {
-    private(set) var cards: [Card]
+struct MemoryGame <CardContent> where CardContent: Equatable {
+    private(set) var cards: Array<Card>
     
     private var indexOfTheOneAndOnlyFaceUpCard: Int? {
         get { cards.indices.filter { cards[$0].isFaceUp }.only }
@@ -20,47 +20,60 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
-    init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
-        cards = []
+    mutating func choose(card: Card) {
+        print("card choosen \(card )")
+        if let choosenIndex =  cards.firstIndex(matching: card), !cards[choosenIndex].isFaceUp, !cards[choosenIndex].isMatched {
+            
+            if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
+                if cards[choosenIndex].content == cards[potentialMatchIndex].content {
+                    cards[choosenIndex].isMatched = true
+                    cards[potentialMatchIndex].isMatched = true
+                }
+                self.cards[choosenIndex].isFaceUp = !self.cards[choosenIndex].isFaceUp
+            } else {
+                indexOfTheOneAndOnlyFaceUpCard = choosenIndex
+            }
+        }
+    }
+
+    
+    init (numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
+        cards = Array<Card>()
         for pairIndex in 0..<numberOfPairsOfCards {
             let content = cardContentFactory(pairIndex)
-            cards.append(Card(id: pairIndex * 2, content: content))
-            cards.append(Card(id: pairIndex * 2 + 1, content: content))
+            cards.append(Card(content: content, id: pairIndex*2 ))
+            cards.append(Card(content: content, id: pairIndex*2+1))
         }
         cards.shuffle()
     }
     
-    mutating func choose(card: Card) {
-        if let chosenIndex = cards.firstIndex(matching: card), !cards[chosenIndex].isFaceUp, !cards[chosenIndex].isMatched {
-            if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
-                if cards[chosenIndex].content == cards[potentialMatchIndex].content {
-                    cards[chosenIndex].isMatched = true
-                    cards[potentialMatchIndex].isMatched = true
-                }
-                self.cards[chosenIndex].isFaceUp = true
-            } else {
-                indexOfTheOneAndOnlyFaceUpCard = chosenIndex
-            }
-        }
-    }
-    
-    struct Card: Identifiable {
-        var id: Int
-        var isFaceUp: Bool = false {
+    struct Card: Identifiable{
+        var isFaceUp = false {
             didSet {
                 if isFaceUp {
                     startUsingBonusTime()
-                } else {
+                }
+                else {
                     stopUsingBonusTime()
                 }
             }
         }
         var isMatched: Bool = false {
             didSet {
-                stopUsingBonusTime()
+                if isFaceUp {
+                    stopUsingBonusTime()
+                }
             }
         }
         var content: CardContent
+        var id: Int
+                
+        //    var isMatched: Bool = false {
+        //        didSet {
+        //            stopUsingBonusTime()
+        //        }
+        //    }
+        //    var content: CardContent
         
         // MARK: - Bonus Time
         // this could give matching bonus points

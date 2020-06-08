@@ -2,8 +2,8 @@
 //  SceneDelegate.swift
 //  Memorize
 //
-//  Created by Felix Lin on 5/20/20.
-//  Copyright © 2020 Felix Lin. All rights reserved.
+//  Created by dev on 5/25/20.
+//  Copyright © 2020 dev.cs193p.student. All rights reserved.
 //
 
 import UIKit

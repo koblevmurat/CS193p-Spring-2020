@@ -2,8 +2,8 @@
 //  Array+Identifiable.swift
 //  Memorize
 //
-//  Created by Felix Lin on 5/30/20.
-//  Copyright © 2020 Felix Lin. All rights reserved.
+//  Created by dev on 5/31/20.
+//  Copyright © 2020 dev.cs193p.student. All rights reserved.
 //
 
 import Foundation
@@ -15,6 +15,6 @@ extension Array where Element: Identifiable {
                 return index
             }
         }
-        return nil
+        return nil //TODO: bogus!
     }
 }
