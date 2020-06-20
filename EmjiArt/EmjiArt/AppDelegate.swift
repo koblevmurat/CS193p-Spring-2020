@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  EmojiArt
+//  EmjiArt
 //
-//  Created by dev on 6/9/20.
+//  Created by dev on 6/10/20.
 //  Copyright © 2020 dev.cs193p.student. All rights reserved.
 //
 
